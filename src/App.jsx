@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { LoginForm } from './components/LoginForm'
 import { Blogs } from './components/Blogs'
 import { BlogForm } from './components/BlogForm'
+import { Notification } from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +15,7 @@ function App() {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +30,7 @@ function App() {
     const userInLocalStorage = JSON.parse(window.localStorage.getItem('BloglistAppUser'))
     if (userInLocalStorage) {
       setUser(userInLocalStorage)
+      blogService.setToken(userInLocalStorage.token)
     }
   }, [])
 
@@ -39,8 +43,11 @@ function App() {
       setTitle('')
       setAuthor('')
       setUrl('')
+      setMessage({ type: 'success', text: `${blog.title} by ${blog.author} added` })
+      setTimeout(() => setMessage(null), 5000)
     } catch (e) {
-      alert('cannot create blog')
+      setMessage({ type: 'error', text: 'Unable to create blog' })
+      setTimeout(() => setMessage(null), 5000)
     }
   }
 
@@ -55,7 +62,8 @@ function App() {
       setUsername('')
       setPassword('')
     } catch (e) {
-      alert('wrong credentials')
+      setMessage({ type: 'error', text: 'Wrong username or password' })
+      setTimeout(() => setMessage(null), 5000)
     }
   }
 
@@ -67,6 +75,8 @@ function App() {
 
   return (
     <div>
+      <Notification message={message} />
+
       <LoginForm
         user={user}
         username={username}
