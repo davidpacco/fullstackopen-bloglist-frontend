@@ -20,17 +20,30 @@ function App() {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const userInLocalStorage = JSON.parse(window.localStorage.getItem('BloglistAppUser'))
+    if (userInLocalStorage) {
+      setUser(userInLocalStorage)
+    }
+  }, [])
+
   const handleLogin = async e => {
     e.preventDefault()
 
     try {
       const user = await loginService.login({ username, password })
+      window.localStorage.setItem('BloglistAppUser', JSON.stringify(user))
       setUser(user)
       setUsername('')
       setPassword('')
     } catch (e) {
       alert('wrong credentials')
     }
+  }
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('BloglistAppUser')
+    setUser(null)
   }
 
   return (
@@ -47,6 +60,7 @@ function App() {
       <Blogs
         user={user}
         blogs={blogs}
+        handleLogout={handleLogout}
       />
     </div>
   )
