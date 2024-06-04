@@ -1,4 +1,4 @@
-export function Login({ user, username, setUsername, password, setPassword, handleLogin }) {
+export function LoginForm({ user, username, setUsername, password, setPassword, handleLogin }) {
   if (user === null) return (
     <div>
       <h2>Log in to app</h2>

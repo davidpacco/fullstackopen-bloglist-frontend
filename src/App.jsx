@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Login } from './components/Login'
+import { LoginForm } from './components/LoginForm'
 import { Blogs } from './components/Blogs'
+import { BlogForm } from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
-
 
 function App() {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,12 +30,27 @@ function App() {
     }
   }, [])
 
+  const createBlog = async e => {
+    e.preventDefault()
+
+    try {
+      const blog = await blogService.addBlog({ title, author, url })
+      setBlogs(blogs.concat(blog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    } catch (e) {
+      alert('cannot create blog')
+    }
+  }
+
   const handleLogin = async e => {
     e.preventDefault()
 
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('BloglistAppUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -43,12 +61,13 @@ function App() {
 
   const handleLogout = () => {
     window.localStorage.removeItem('BloglistAppUser')
+    blogService.setToken(null)
     setUser(null)
   }
 
   return (
     <div>
-      <Login
+      <LoginForm
         user={user}
         username={username}
         password={password}
@@ -61,7 +80,19 @@ function App() {
         user={user}
         blogs={blogs}
         handleLogout={handleLogout}
-      />
+      >
+        <BlogForm
+          user={user}
+          title={title}
+          setTitle={setTitle}
+          author={author}
+          setAuthor={setAuthor}
+          url={url}
+          setUrl={setUrl}
+          createBlog={createBlog}
+        />
+      </Blogs>
+
     </div>
   )
 }
