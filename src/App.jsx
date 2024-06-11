@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { LoginForm } from './components/LoginForm'
 import { Blogs } from './components/Blogs'
 import { BlogForm } from './components/BlogForm'
 import { Notification } from './components/Notification'
+import { Togglable } from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
@@ -16,6 +17,7 @@ function App() {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
+  const blogFormRef = useRef()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +41,7 @@ function App() {
 
     try {
       const blog = await blogService.addBlog({ title, author, url })
+      blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blog))
       setTitle('')
       setAuthor('')
@@ -91,16 +94,18 @@ function App() {
         blogs={blogs}
         handleLogout={handleLogout}
       >
-        <BlogForm
-          user={user}
-          title={title}
-          setTitle={setTitle}
-          author={author}
-          setAuthor={setAuthor}
-          url={url}
-          setUrl={setUrl}
-          createBlog={createBlog}
-        />
+        <Togglable buttonLabel="New blog" ref={blogFormRef}>
+          <BlogForm
+            user={user}
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            url={url}
+            setUrl={setUrl}
+            createBlog={createBlog}
+          />
+        </Togglable>
       </Blogs>
 
     </div>
