@@ -10,12 +10,7 @@ import './index.css'
 
 function App() {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
   const blogFormRef = useRef()
 
@@ -36,16 +31,11 @@ function App() {
     }
   }, [])
 
-  const createBlog = async e => {
-    e.preventDefault()
-
+  const addBlog = async blogObject => {
     try {
-      const blog = await blogService.addBlog({ title, author, url })
+      const blog = await blogService.addBlog(blogObject)
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
       setMessage({ type: 'success', text: `${blog.title} by ${blog.author} added` })
       setTimeout(() => setMessage(null), 5000)
     } catch (e) {
@@ -54,16 +44,12 @@ function App() {
     }
   }
 
-  const handleLogin = async e => {
-    e.preventDefault()
-
+  const handleLogin = async userObject => {
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login(userObject)
       window.localStorage.setItem('BloglistAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (e) {
       setMessage({ type: 'error', text: 'Wrong username or password' })
       setTimeout(() => setMessage(null), 5000)
@@ -82,11 +68,7 @@ function App() {
 
       <LoginForm
         user={user}
-        username={username}
-        password={password}
-        setUsername={setUsername}
-        setPassword={setPassword}
-        handleLogin={handleLogin}
+        onLogin={handleLogin}
       />
 
       <Blogs
@@ -97,13 +79,7 @@ function App() {
         <Togglable buttonLabel="New blog" ref={blogFormRef}>
           <BlogForm
             user={user}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-            createBlog={createBlog}
+            createBlog={addBlog}
           />
         </Togglable>
       </Blogs>

@@ -1,4 +1,18 @@
-export function LoginForm({ user, username, setUsername, password, setPassword, handleLogin }) {
+import { useState } from "react"
+
+export function LoginForm({ user, onLogin }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = async e => {
+    e.preventDefault()
+
+    await onLogin({ username, password })
+
+    setUsername('')
+    setPassword('')
+  }
+
   if (user === null) return (
     <div>
       <h2>Log in to app</h2>
