@@ -62,6 +62,16 @@ function App() {
     setUser(null)
   }
 
+  const handleLike = async (id, blogObject) => {
+    try {
+      const updatedBlog = await blogService.likeBlog(id, blogObject)
+      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
+    } catch (e) {
+      setMessage({ type: 'error', text: 'Cannot like blog, try again later' })
+      setTimeout(() => setMessage(null), 5000)
+    }
+  }
+
   return (
     <div>
       <Notification message={message} />
@@ -75,6 +85,7 @@ function App() {
         user={user}
         blogs={blogs}
         handleLogout={handleLogout}
+        handleLike={handleLike}
       >
         <Togglable buttonLabel="New blog" ref={blogFormRef}>
           <BlogForm
