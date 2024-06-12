@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export function Blog({ blog, onLike }) {
+export function Blog({ blog, onLike, user, deleteBlog }) {
   const [isDetailOpen, setIsDetailOpen] = useState(false)
 
   const blogStyle = {
@@ -23,6 +23,12 @@ export function Blog({ blog, onLike }) {
     })
   }
 
+  const removeBlog = () => {
+    const deletionConfirmed = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+
+    if (deletionConfirmed) deleteBlog(blog.id)
+  }
+
   return (
     <div style={blogStyle}>
       {blog.title} - {blog.author} <button onClick={toggleDetail}>{isDetailOpen ? 'Hide' : 'View'}</button>
@@ -31,6 +37,7 @@ export function Blog({ blog, onLike }) {
           <p>{blog.url}</p>
           <p>Likes {blog.likes} <button onClick={handleLike}>Like</button></p>
           <p>{blog.user.name}</p>
+          {user.username === blog.user.username && <button onClick={removeBlog}>Remove</button>}
         </div>
       }
     </div>

@@ -73,6 +73,16 @@ function App() {
     }
   }
 
+  const removeBlog = async id => {
+    try {
+      await blogService.removeBlog(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
+    } catch (e) {
+      setMessage('Cannot delete blog')
+      setTimeout(() => setMessage(null), 5000)
+    }
+  }
+
   return (
     <div>
       <Notification message={message} />
@@ -87,6 +97,7 @@ function App() {
         blogs={sortedBlogs}
         handleLogout={handleLogout}
         handleLike={handleLike}
+        removeBlog={removeBlog}
       >
         <Togglable buttonLabel="New blog" ref={blogFormRef}>
           <BlogForm
