@@ -13,6 +13,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const blogFormRef = useRef()
+  const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +84,7 @@ function App() {
 
       <Blogs
         user={user}
-        blogs={blogs}
+        blogs={sortedBlogs}
         handleLogout={handleLogout}
         handleLike={handleLike}
       >
