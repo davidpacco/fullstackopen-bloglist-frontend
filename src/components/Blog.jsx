@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 export function Blog({ blog, onLike, user, deleteBlog }) {
   const [isDetailOpen, setIsDetailOpen] = useState(false)
