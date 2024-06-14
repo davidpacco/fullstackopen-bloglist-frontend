@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { Blog } from './Blog'
-import { expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { test } from 'vitest'
 
 const testBlog = {
   title: 'Test title',
@@ -41,5 +39,19 @@ describe('<Blog />', () => {
     expect(div).toHaveTextContent('someurl.com')
     expect(div).toHaveTextContent('Likes 3')
     expect(div).not.toHaveStyle('display: none')
+  })
+
+  test('clicking the like button twice calls the event handler twice', async () => {
+    const user = userEvent.setup()
+    const onLike = vi.fn()
+
+    render(<Blog blog={testBlog} user={testUser} onLike={onLike} />)
+
+    const button = screen.getByText('Like')
+
+    await user.click(button)
+    await user.click(button)
+
+    expect(onLike.mock.calls).toHaveLength(2)
   })
 })
