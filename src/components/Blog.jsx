@@ -30,16 +30,14 @@ export function Blog({ blog, onLike, user, deleteBlog }) {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {blog.title} - {blog.author} <button onClick={toggleDetail}>{isDetailOpen ? 'Hide' : 'View'}</button>
-      {isDetailOpen &&
-        <div>
-          <p>{blog.url}</p>
-          <p>Likes {blog.likes} <button onClick={handleLike}>Like</button></p>
-          <p>{blog.user.name}</p>
-          {user.username === blog.user.username && <button onClick={removeBlog}>Remove</button>}
-        </div>
-      }
+      <div style={{ display: isDetailOpen ? '' : 'none' }} className='blogDetail'>
+        <p>{blog.url}</p>
+        <p>Likes {blog.likes} <button onClick={handleLike}>Like</button></p>
+        <p>{blog.user.name}</p>
+        {user.username === blog.user.username && <button onClick={removeBlog}>Remove</button>}
+      </div>
     </div>
   )
 }
