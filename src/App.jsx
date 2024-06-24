@@ -34,7 +34,15 @@ function App() {
 
   const addBlog = async blogObject => {
     try {
-      const blog = await blogService.addBlog(blogObject)
+      let blog = await blogService.addBlog(blogObject)
+      blog = {
+        ...blog,
+        user: {
+          name: user.name,
+          username: user.username
+        }
+      }
+
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blog))
       setMessage({ type: 'success', text: `${blog.title} by ${blog.author} added` })

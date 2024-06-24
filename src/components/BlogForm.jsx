@@ -30,6 +30,7 @@ export function BlogForm({ user, createBlog }) {
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder='Enter the blog title'
+              data-testid='title'
             />
           </label>
         </div>
@@ -43,6 +44,7 @@ export function BlogForm({ user, createBlog }) {
               value={author}
               onChange={e => setAuthor(e.target.value)}
               placeholder='Enter the author&apos;s name'
+              data-testid='author'
             />
           </label>
         </div>
@@ -56,6 +58,7 @@ export function BlogForm({ user, createBlog }) {
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder='Enter the URL'
+              data-testid='url'
             />
           </label>
         </div>

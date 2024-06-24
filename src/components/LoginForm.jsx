@@ -25,19 +25,21 @@ export function LoginForm({ user, onLogin }) {
             name='username'
             value={username}
             onChange={e => setUsername(e.target.value)}
+            data-testid='username'
           />
         </div>
         <div>
-          password
+          Password
           <input
             type="password"
             name='password'
             value={password}
             onChange={e => setPassword(e.target.value)}
+            data-testid='password'
           />
         </div>
 
-        <button>login</button>
+        <button>Login</button>
       </form>
     </div>
   )
