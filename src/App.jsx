@@ -1,4 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+  successNotification,
+  errorNotification,
+} from './reducers/notificationReducer'
 import { LoginForm } from './components/LoginForm'
 import { Blogs } from './components/Blogs'
 import { BlogForm } from './components/BlogForm'
@@ -9,9 +14,9 @@ import loginService from './services/login'
 import './index.css'
 
 function App() {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
   const blogFormRef = useRef()
   const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
@@ -47,14 +52,9 @@ function App() {
 
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blog))
-      setMessage({
-        type: 'success',
-        text: `${blog.title} by ${blog.author} added`,
-      })
-      setTimeout(() => setMessage(null), 5000)
+      dispatch(successNotification(`${blog.title} by ${blog.author} added`))
     } catch (e) {
-      setMessage({ type: 'error', text: 'Unable to create blog' })
-      setTimeout(() => setMessage(null), 5000)
+      dispatch(errorNotification('Unable to create blog'))
     }
   }
 
@@ -65,8 +65,7 @@ function App() {
       blogService.setToken(user.token)
       setUser(user)
     } catch (e) {
-      setMessage({ type: 'error', text: 'Wrong username or password' })
-      setTimeout(() => setMessage(null), 5000)
+      dispatch(errorNotification('Wrong username or password'))
     }
   }
 
@@ -83,8 +82,7 @@ function App() {
         blogs.map(blog => (blog.id === updatedBlog.id ? updatedBlog : blog))
       )
     } catch (e) {
-      setMessage({ type: 'error', text: 'Cannot like blog, try again later' })
-      setTimeout(() => setMessage(null), 5000)
+      dispatch(errorNotification('Cannot like blog, try again later'))
     }
   }
 
@@ -93,14 +91,13 @@ function App() {
       await blogService.removeBlog(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
     } catch (e) {
-      setMessage('Cannot delete blog')
-      setTimeout(() => setMessage(null), 5000)
+      dispatch(errorNotification('Cannot delete blog'))
     }
   }
 
   return (
     <div>
-      <Notification message={message} />
+      <Notification />
 
       <LoginForm user={user} onLogin={handleLogin} />
 
