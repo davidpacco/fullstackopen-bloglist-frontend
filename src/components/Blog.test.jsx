@@ -9,14 +9,14 @@ const testBlog = {
   url: 'someurl.com',
   user: {
     name: 'Some User',
-    username: 'someuser'
-  }
+    username: 'someuser',
+  },
 }
 
 const testUser = { username: 'someuser' }
 
 describe('<Blog />', () => {
-  test('displays blog\'s title and author, but not the details by default', () => {
+  test("displays blog's title and author, but not the details by default", () => {
     render(<Blog blog={testBlog} user={testUser} />)
 
     const element = screen.getByText('Test title - Some Author')
@@ -26,7 +26,7 @@ describe('<Blog />', () => {
     expect(div).toHaveStyle('display: none')
   })
 
-  test('displays blog\'s detail when view button is clicked', async () => {
+  test("displays blog's detail when view button is clicked", async () => {
     render(<Blog blog={testBlog} user={testUser} />)
 
     const user = userEvent.setup()

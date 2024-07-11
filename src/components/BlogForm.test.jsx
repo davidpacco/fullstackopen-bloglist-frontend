@@ -10,7 +10,7 @@ describe('<BlogForm />', () => {
 
     const user = userEvent.setup()
     const title = screen.getByPlaceholderText('Enter the blog title')
-    const author = screen.getByPlaceholderText('Enter the author\'s name')
+    const author = screen.getByPlaceholderText("Enter the author's name")
     const url = screen.getByPlaceholderText('Enter the URL')
     const button = screen.getByText('Create')
 

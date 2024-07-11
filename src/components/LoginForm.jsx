@@ -14,37 +14,38 @@ export function LoginForm({ user, onLogin }) {
     setPassword('')
   }
 
-  if (user === null) return (
-    <div>
-      <h2>Log in to app</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          Username
-          <input
-            type="text"
-            name='username'
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            data-testid='username'
-          />
-        </div>
-        <div>
-          Password
-          <input
-            type="password"
-            name='password'
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            data-testid='password'
-          />
-        </div>
+  if (user === null)
+    return (
+      <div>
+        <h2>Log in to app</h2>
+        <form onSubmit={handleLogin}>
+          <div>
+            Username
+            <input
+              type="text"
+              name="username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              data-testid="username"
+            />
+          </div>
+          <div>
+            Password
+            <input
+              type="password"
+              name="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              data-testid="password"
+            />
+          </div>
 
-        <button>Login</button>
-      </form>
-    </div>
-  )
+          <button>Login</button>
+        </form>
+      </div>
+    )
 }
 
 LoginForm.propTypes = {
-  onLogin: PropTypes.func.isRequired
+  onLogin: PropTypes.func.isRequired,
 }

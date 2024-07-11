@@ -25,7 +25,9 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const userInLocalStorage = JSON.parse(window.localStorage.getItem('BloglistAppUser'))
+    const userInLocalStorage = JSON.parse(
+      window.localStorage.getItem('BloglistAppUser')
+    )
     if (userInLocalStorage) {
       setUser(userInLocalStorage)
       blogService.setToken(userInLocalStorage.token)
@@ -39,13 +41,16 @@ function App() {
         ...blog,
         user: {
           name: user.name,
-          username: user.username
-        }
+          username: user.username,
+        },
       }
 
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blog))
-      setMessage({ type: 'success', text: `${blog.title} by ${blog.author} added` })
+      setMessage({
+        type: 'success',
+        text: `${blog.title} by ${blog.author} added`,
+      })
       setTimeout(() => setMessage(null), 5000)
     } catch (e) {
       setMessage({ type: 'error', text: 'Unable to create blog' })
@@ -74,7 +79,9 @@ function App() {
   const handleLike = async (id, blogObject) => {
     try {
       const updatedBlog = await blogService.likeBlog(id, blogObject)
-      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
+      setBlogs(
+        blogs.map(blog => (blog.id === updatedBlog.id ? updatedBlog : blog))
+      )
     } catch (e) {
       setMessage({ type: 'error', text: 'Cannot like blog, try again later' })
       setTimeout(() => setMessage(null), 5000)
@@ -95,10 +102,7 @@ function App() {
     <div>
       <Notification message={message} />
 
-      <LoginForm
-        user={user}
-        onLogin={handleLogin}
-      />
+      <LoginForm user={user} onLogin={handleLogin} />
 
       <Blogs
         user={user}
@@ -108,13 +112,9 @@ function App() {
         removeBlog={removeBlog}
       >
         <Togglable buttonLabel="New blog" ref={blogFormRef}>
-          <BlogForm
-            user={user}
-            createBlog={addBlog}
-          />
+          <BlogForm user={user} createBlog={addBlog} />
         </Togglable>
       </Blogs>
-
     </div>
   )
 }
