@@ -1,22 +1,21 @@
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogsReducer'
-import {
-  setAuthor,
-  setTitle,
-  setUrl,
-  resetBlogForm,
-} from '../reducers/blogFormReducer'
 
 export function BlogForm({ blogFormRef }) {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user)
-  const { title, author, url } = useSelector(({ blogForm }) => blogForm)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const addBlog = async e => {
     e.preventDefault()
     dispatch(createBlog({ title, author, url }, user))
-    dispatch(resetBlogForm())
     blogFormRef.current.toggleVisibility()
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   if (user !== null)
@@ -32,7 +31,7 @@ export function BlogForm({ blogFormRef }) {
                 name="title"
                 type="text"
                 value={title}
-                onChange={e => dispatch(setTitle(e.target.value))}
+                onChange={e => setTitle(e.target.value)}
                 placeholder="Enter the blog title"
                 data-testid="title"
               />
@@ -46,7 +45,7 @@ export function BlogForm({ blogFormRef }) {
                 name="title"
                 type="text"
                 value={author}
-                onChange={e => dispatch(setAuthor(e.target.value))}
+                onChange={e => setAuthor(e.target.value)}
                 placeholder="Enter the author's name"
                 data-testid="author"
               />
@@ -60,7 +59,7 @@ export function BlogForm({ blogFormRef }) {
                 name="url"
                 type="text"
                 value={url}
-                onChange={e => dispatch(setUrl(e.target.value))}
+                onChange={e => setUrl(e.target.value)}
                 placeholder="Enter the URL"
                 data-testid="url"
               />
