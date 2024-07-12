@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteBlog, likeBlog } from '../reducers/blogsReducer'
 
-export function Blog({ blog, user }) {
+export function Blog({ blog }) {
   const dispatch = useDispatch()
+  const user = useSelector(({ user }) => user)
   const [isDetailOpen, setIsDetailOpen] = useState(false)
 
   const blogStyle = {

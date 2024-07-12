@@ -8,10 +8,11 @@ export function Notification() {
     success: 'notification success',
   }
 
-  if (notification)
+  if (notification) {
     return (
       <div className={notificationClass[notification.type]}>
         <p>{notification.message}</p>
       </div>
     )
+  }
 }

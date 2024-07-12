@@ -34,11 +34,19 @@ export const initialBlogs = () => {
   }
 }
 
-export const createBlog = blog => {
+export const createBlog = (blog, user) => {
   return async dispatch => {
     try {
       const newBlog = await blogService.addBlog(blog)
-      dispatch(addBlog(newBlog))
+      dispatch(
+        addBlog({
+          ...newBlog,
+          user: {
+            name: user.name,
+            username: user.username,
+          },
+        })
+      )
       dispatch(
         successNotification(`${newBlog.title} by ${newBlog.author} added`)
       )
@@ -60,13 +68,13 @@ export const likeBlog = (id, blogObject) => {
 }
 
 export const deleteBlog = blog => {
-  const { id, title, author } = blog
-  const deletionConfirmed = window.confirm(`Remove blog ${title} by ${author}`)
+  return async dispatch => {
+    const { id, title, author } = blog
+    const deletionConfirmed = window.confirm(
+      `Remove blog ${title} by ${author}`
+    )
 
-  if (deletionConfirmed) {
-    console.log(blog)
-    console.log(id)
-    return async dispatch => {
+    if (deletionConfirmed) {
       try {
         await blogService.removeBlog(id)
         dispatch(removeBlog(id))

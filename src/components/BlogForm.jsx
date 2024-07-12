@@ -7,13 +7,14 @@ import {
   resetBlogForm,
 } from '../reducers/blogFormReducer'
 
-export function BlogForm({ user, blogFormRef }) {
+export function BlogForm({ blogFormRef }) {
   const dispatch = useDispatch()
+  const user = useSelector(({ user }) => user)
   const { title, author, url } = useSelector(({ blogForm }) => blogForm)
 
   const addBlog = async e => {
     e.preventDefault()
-    dispatch(createBlog({ title, author, url }))
+    dispatch(createBlog({ title, author, url }, user))
     dispatch(resetBlogForm())
     blogFormRef.current.toggleVisibility()
   }
