@@ -21,15 +21,6 @@ function App() {
   const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await blogService.getAll()
-      setBlogs(data)
-    }
-
-    fetchData()
-  }, [])
-
-  useEffect(() => {
     const userInLocalStorage = JSON.parse(
       window.localStorage.getItem('BloglistAppUser')
     )
@@ -38,25 +29,6 @@ function App() {
       blogService.setToken(userInLocalStorage.token)
     }
   }, [])
-
-  const addBlog = async blogObject => {
-    try {
-      let blog = await blogService.addBlog(blogObject)
-      blog = {
-        ...blog,
-        user: {
-          name: user.name,
-          username: user.username,
-        },
-      }
-
-      blogFormRef.current.toggleVisibility()
-      setBlogs(blogs.concat(blog))
-      dispatch(successNotification(`${blog.title} by ${blog.author} added`))
-    } catch (e) {
-      dispatch(errorNotification('Unable to create blog'))
-    }
-  }
 
   const handleLogin = async userObject => {
     try {
@@ -109,7 +81,7 @@ function App() {
         removeBlog={removeBlog}
       >
         <Togglable buttonLabel="New blog" ref={blogFormRef}>
-          <BlogForm user={user} createBlog={addBlog} />
+          <BlogForm user={user} blogFormRef={blogFormRef} />
         </Togglable>
       </Blogs>
     </div>

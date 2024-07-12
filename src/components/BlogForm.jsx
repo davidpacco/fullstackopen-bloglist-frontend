@@ -1,19 +1,21 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useDispatch, useSelector } from 'react-redux'
+import { createBlog } from '../reducers/blogsReducer'
+import {
+  setAuthor,
+  setTitle,
+  setUrl,
+  resetBlogForm,
+} from '../reducers/blogFormReducer'
 
-export function BlogForm({ user, createBlog }) {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+export function BlogForm({ user, blogFormRef }) {
+  const dispatch = useDispatch()
+  const { title, author, url } = useSelector(({ blogForm }) => blogForm)
 
   const addBlog = async e => {
     e.preventDefault()
-
-    await createBlog({ title, author, url })
-
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    dispatch(createBlog({ title, author, url }))
+    dispatch(resetBlogForm())
+    blogFormRef.current.toggleVisibility()
   }
 
   if (user !== null)
@@ -29,7 +31,7 @@ export function BlogForm({ user, createBlog }) {
                 name="title"
                 type="text"
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={e => dispatch(setTitle(e.target.value))}
                 placeholder="Enter the blog title"
                 data-testid="title"
               />
@@ -43,7 +45,7 @@ export function BlogForm({ user, createBlog }) {
                 name="title"
                 type="text"
                 value={author}
-                onChange={e => setAuthor(e.target.value)}
+                onChange={e => dispatch(setAuthor(e.target.value))}
                 placeholder="Enter the author's name"
                 data-testid="author"
               />
@@ -57,7 +59,7 @@ export function BlogForm({ user, createBlog }) {
                 name="url"
                 type="text"
                 value={url}
-                onChange={e => setUrl(e.target.value)}
+                onChange={e => dispatch(setUrl(e.target.value))}
                 placeholder="Enter the URL"
                 data-testid="url"
               />
@@ -68,8 +70,4 @@ export function BlogForm({ user, createBlog }) {
         </form>
       </div>
     )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
 }

@@ -1,13 +1,22 @@
 import { Blog } from './Blog'
+import { useSelector, useDispatch } from 'react-redux'
+import { initialBlogs } from '../reducers/blogsReducer'
+import { useEffect } from 'react'
 
 export function Blogs({
   user,
-  blogs,
   handleLogout,
   handleLike,
   removeBlog,
   children,
 }) {
+  const dispatch = useDispatch()
+  const blogs = useSelector(({ blogs }) => blogs)
+
+  useEffect(() => {
+    dispatch(initialBlogs())
+  }, [dispatch])
+
   if (user !== null)
     return (
       <div>
