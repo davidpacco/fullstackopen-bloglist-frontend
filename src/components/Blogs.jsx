@@ -14,15 +14,9 @@ export function Blogs({ children }) {
     dispatch(initialBlogs())
   }, [dispatch])
 
-  const handleLogout = () => dispatch(logout())
-
   if (user !== null)
     return (
       <div>
-        <h2>Blogs</h2>
-        <p>
-          {user.name} logged in <button onClick={handleLogout}>Logout</button>
-        </p>
         {children}
         <br />
         {sortedBlogs.map(blog => (
