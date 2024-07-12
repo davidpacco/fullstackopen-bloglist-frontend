@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteBlog, likeBlog } from '../reducers/blogsReducer'
 
-export function Blog({ blog, onLike, user, deleteBlog }) {
+export function Blog({ blog, user }) {
+  const dispatch = useDispatch()
   const [isDetailOpen, setIsDetailOpen] = useState(false)
 
   const blogStyle = {
@@ -13,23 +16,19 @@ export function Blog({ blog, onLike, user, deleteBlog }) {
 
   const toggleDetail = () => setIsDetailOpen(!isDetailOpen)
 
-  const handleLike = async () => {
-    await onLike(blog.id, {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      user: blog.user.id,
-      likes: blog.likes + 1,
-    })
-  }
-
-  const removeBlog = () => {
-    const deletionConfirmed = window.confirm(
-      `Remove blog ${blog.title} by ${blog.author}`
+  const handleLike = () => {
+    dispatch(
+      likeBlog(blog.id, {
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        user: blog.user.id,
+        likes: blog.likes + 1,
+      })
     )
-
-    if (deletionConfirmed) deleteBlog(blog.id)
   }
+
+  const handleDelete = () => dispatch(deleteBlog(blog))
 
   return (
     <div style={blogStyle} className="blog">
@@ -45,7 +44,7 @@ export function Blog({ blog, onLike, user, deleteBlog }) {
         </p>
         <p>{blog.user.name}</p>
         {user.username === blog.user.username && (
-          <button onClick={removeBlog}>Remove</button>
+          <button onClick={handleDelete}>Remove</button>
         )}
       </div>
     </div>

@@ -3,15 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { initialBlogs } from '../reducers/blogsReducer'
 import { useEffect } from 'react'
 
-export function Blogs({
-  user,
-  handleLogout,
-  handleLike,
-  removeBlog,
-  children,
-}) {
+export function Blogs({ user, handleLogout, children }) {
   const dispatch = useDispatch()
   const blogs = useSelector(({ blogs }) => blogs)
+  const sortedBlogs = blogs.toSorted((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     dispatch(initialBlogs())
@@ -26,14 +21,8 @@ export function Blogs({
         </p>
         {children}
         <br />
-        {blogs.map(blog => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            onLike={handleLike}
-            deleteBlog={removeBlog}
-            user={user}
-          />
+        {sortedBlogs.map(blog => (
+          <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </div>
     )

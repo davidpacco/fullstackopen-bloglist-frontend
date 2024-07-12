@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-  successNotification,
-  errorNotification,
-} from './reducers/notificationReducer'
+import { errorNotification } from './reducers/notificationReducer'
 import { LoginForm } from './components/LoginForm'
 import { Blogs } from './components/Blogs'
 import { BlogForm } from './components/BlogForm'
@@ -15,10 +12,8 @@ import './index.css'
 
 function App() {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const blogFormRef = useRef()
-  const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     const userInLocalStorage = JSON.parse(
@@ -47,39 +42,13 @@ function App() {
     setUser(null)
   }
 
-  const handleLike = async (id, blogObject) => {
-    try {
-      const updatedBlog = await blogService.likeBlog(id, blogObject)
-      setBlogs(
-        blogs.map(blog => (blog.id === updatedBlog.id ? updatedBlog : blog))
-      )
-    } catch (e) {
-      dispatch(errorNotification('Cannot like blog, try again later'))
-    }
-  }
-
-  const removeBlog = async id => {
-    try {
-      await blogService.removeBlog(id)
-      setBlogs(blogs.filter(blog => blog.id !== id))
-    } catch (e) {
-      dispatch(errorNotification('Cannot delete blog'))
-    }
-  }
-
   return (
     <div>
       <Notification />
 
       <LoginForm user={user} onLogin={handleLogin} />
 
-      <Blogs
-        user={user}
-        blogs={sortedBlogs}
-        handleLogout={handleLogout}
-        handleLike={handleLike}
-        removeBlog={removeBlog}
-      >
+      <Blogs user={user} handleLogout={handleLogout}>
         <Togglable buttonLabel="New blog" ref={blogFormRef}>
           <BlogForm user={user} blogFormRef={blogFormRef} />
         </Togglable>

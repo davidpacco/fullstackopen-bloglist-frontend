@@ -12,10 +12,20 @@ const blogSlice = createSlice({
     addBlog(state, action) {
       state.push(action.payload)
     },
+    removeBlog(state, action) {
+      const id = action.payload
+      return state.filter(blog => blog.id !== id)
+    },
+    updateBlog(state, action) {
+      const updatedBlog = action.payload
+      return state.map(blog =>
+        blog.id !== updatedBlog.id ? blog : updatedBlog
+      )
+    },
   },
 })
 
-export const { setBlogs, addBlog } = blogSlice.actions
+export const { setBlogs, addBlog, updateBlog, removeBlog } = blogSlice.actions
 
 export const initialBlogs = () => {
   return async dispatch => {
@@ -34,6 +44,35 @@ export const createBlog = blog => {
       )
     } catch {
       dispatch(errorNotification('Cannot create blog'))
+    }
+  }
+}
+
+export const likeBlog = (id, blogObject) => {
+  return async dispatch => {
+    try {
+      const likedBlog = await blogService.likeBlog(id, blogObject)
+      dispatch(updateBlog(likedBlog))
+    } catch {
+      dispatch(errorNotification('Cannot like blog, try again later'))
+    }
+  }
+}
+
+export const deleteBlog = blog => {
+  const { id, title, author } = blog
+  const deletionConfirmed = window.confirm(`Remove blog ${title} by ${author}`)
+
+  if (deletionConfirmed) {
+    console.log(blog)
+    console.log(id)
+    return async dispatch => {
+      try {
+        await blogService.removeBlog(id)
+        dispatch(removeBlog(id))
+      } catch {
+        dispatch(errorNotification('Cannot like blog, try again later'))
+      }
     }
   }
 }
