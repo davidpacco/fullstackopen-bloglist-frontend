@@ -51,6 +51,12 @@ export function Blog() {
       {user.username === blog.user.username && (
         <button onClick={handleDelete}>Remove</button>
       )}
+      <h3>Comments</h3>
+      <ul>
+        {blog.comments.map((comment, index) => (
+          <li key={index}>{comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }
