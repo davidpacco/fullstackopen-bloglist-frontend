@@ -22,10 +22,16 @@ const blogSlice = createSlice({
         blog.id !== updatedBlog.id ? blog : updatedBlog
       )
     },
+    addComment(state, action) {
+      const { id, comment } = action.payload
+      const blogToUpdate = state.find(blog => blog.id === id)
+      blogToUpdate.comments = blogToUpdate.comments.concat(comment)
+    },
   },
 })
 
-export const { setBlogs, addBlog, updateBlog, removeBlog } = blogSlice.actions
+export const { setBlogs, addBlog, updateBlog, removeBlog, addComment } =
+  blogSlice.actions
 
 export const initialBlogs = () => {
   return async dispatch => {
@@ -72,6 +78,17 @@ export const deleteBlog = id => {
     await blogService.removeBlog(id)
     dispatch(removeBlog(id))
     dispatch(successNotification('Blog deleted'))
+  }
+}
+
+export const postComment = (id, comment) => {
+  return async dispatch => {
+    try {
+      const newComment = await blogService.commentBlog(id, comment)
+      dispatch(addComment({ id, comment: newComment }))
+    } catch {
+      dispatch(errorNotification('Cannot post comment, try again later'))
+    }
   }
 }
 

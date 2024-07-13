@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteBlog, likeBlog } from '../reducers/blogsReducer'
+import { deleteBlog, likeBlog, postComment } from '../reducers/blogsReducer'
 import { useParams, useNavigate } from 'react-router-dom'
 
 export function Blog() {
@@ -34,6 +34,13 @@ export function Blog() {
     }
   }
 
+  const handleSubmit = e => {
+    e.preventDefault()
+    const comment = e.target.comment.value
+    dispatch(postComment(blog.id, comment))
+    e.target.comment.value = ''
+  }
+
   if (!blog) return null
 
   return (
@@ -52,6 +59,10 @@ export function Blog() {
         <button onClick={handleDelete}>Remove</button>
       )}
       <h3>Comments</h3>
+      <form onSubmit={handleSubmit}>
+        <input name="comment" type="text" />
+        <button type="submit">Add comment</button>
+      </form>
       <ul>
         {blog.comments.map((comment, index) => (
           <li key={index}>{comment}</li>
