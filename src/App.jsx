@@ -9,20 +9,13 @@ import { Togglable } from './components/Togglable'
 import { Users } from './components/Users'
 import { User } from './components/User'
 import { Blog } from './components/Blog'
-import {
-  Routes,
-  Route,
-  Link,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from 'react-router-dom'
+import { NavBar } from './components/NavBar'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import './index.css'
 
 function App() {
   const dispatch = useDispatch()
   const location = useLocation()
-  const navigate = useNavigate()
   const user = useSelector(({ user }) => user)
   const blogFormRef = useRef()
 
@@ -30,21 +23,15 @@ function App() {
     dispatch(initialUser())
   }, [dispatch])
 
-  const handleLogout = () => {
-    dispatch(logout())
-    // navigate('/login')
-  }
-
   return (
     <div>
-      <Notification />
       {location.pathname !== '/login' && (
         <>
-          <h2>Blogs</h2>
-          <p>{user?.name} logged in</p>
-          <button onClick={handleLogout}>Logout</button>
+          <NavBar />
+          <h2>Blog App</h2>
         </>
       )}
+      <Notification />
       <Routes>
         <Route
           path="/"
