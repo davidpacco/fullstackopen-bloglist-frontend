@@ -78,6 +78,7 @@ export const deleteBlog = blog => {
       try {
         await blogService.removeBlog(id)
         dispatch(removeBlog(id))
+        dispatch(successNotification('Blog deleted'))
       } catch {
         dispatch(errorNotification('Cannot like blog, try again later'))
       }

@@ -1,14 +1,21 @@
-import { Blog } from './Blog'
 import { useSelector, useDispatch } from 'react-redux'
 import { initialBlogs } from '../reducers/blogsReducer'
-import { logout } from '../reducers/userReducer'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export function Blogs({ children }) {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user)
   const blogs = useSelector(({ blogs }) => blogs)
   const sortedBlogs = blogs.toSorted((a, b) => b.likes - a.likes)
+
+  const blogStyle = {
+    padding: '10px 8px',
+    border: 'solid',
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 8,
+  }
 
   useEffect(() => {
     dispatch(initialBlogs())
@@ -20,7 +27,9 @@ export function Blogs({ children }) {
         {children}
         <br />
         {sortedBlogs.map(blog => (
-          <Blog key={blog.id} blog={blog} />
+          <div key={blog.id} style={blogStyle}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </div>
         ))}
       </div>
     )

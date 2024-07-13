@@ -8,6 +8,7 @@ import { Notification } from './components/Notification'
 import { Togglable } from './components/Togglable'
 import { Users } from './components/Users'
 import { User } from './components/User'
+import { Blog } from './components/Blog'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import './index.css'
 
@@ -49,6 +50,7 @@ function App() {
         />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />
+        <Route path="/blogs/:id" element={<Blog />} />
       </Routes>
     </div>
   )
