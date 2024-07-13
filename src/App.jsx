@@ -7,6 +7,7 @@ import { BlogForm } from './components/BlogForm'
 import { Notification } from './components/Notification'
 import { Togglable } from './components/Togglable'
 import { Users } from './components/Users'
+import { User } from './components/User'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import './index.css'
 
@@ -33,7 +34,7 @@ function App() {
           element={
             user ? (
               <Blogs>
-                <Togglable buttonLabel="New blog" ref={blogFormRef}>
+                <Togglable buttonLabel="Create new" ref={blogFormRef}>
                   <BlogForm blogFormRef={blogFormRef} />
                 </Togglable>
               </Blogs>
@@ -47,6 +48,7 @@ function App() {
           element={user ? <Navigate to="/" replace /> : <LoginForm />}
         />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
     </div>
   )
