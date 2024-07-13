@@ -67,22 +67,11 @@ export const likeBlog = (id, blogObject) => {
   }
 }
 
-export const deleteBlog = blog => {
+export const deleteBlog = id => {
   return async dispatch => {
-    const { id, title, author } = blog
-    const deletionConfirmed = window.confirm(
-      `Remove blog ${title} by ${author}`
-    )
-
-    if (deletionConfirmed) {
-      try {
-        await blogService.removeBlog(id)
-        dispatch(removeBlog(id))
-        dispatch(successNotification('Blog deleted'))
-      } catch {
-        dispatch(errorNotification('Cannot like blog, try again later'))
-      }
-    }
+    await blogService.removeBlog(id)
+    dispatch(removeBlog(id))
+    dispatch(successNotification('Blog deleted'))
   }
 }
 

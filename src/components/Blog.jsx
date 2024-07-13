@@ -24,15 +24,23 @@ export function Blog() {
   }
 
   const handleDelete = () => {
-    dispatch(deleteBlog(blog))
-    navigate('/')
+    const deletionConfirmed = window.confirm(
+      `Remove blog ${blog.title} by ${blog.author}`
+    )
+
+    if (deletionConfirmed) {
+      dispatch(deleteBlog(blog.id))
+      navigate('/')
+    }
   }
 
   if (!blog) return null
 
   return (
     <div className="blog">
-      <h2>{blog.title}</h2>
+      <h2>
+        {blog.title} - {blog.author}
+      </h2>
       <div>
         <a href={blog.url}>{blog.url}</a>
       </div>

@@ -38,7 +38,7 @@ export const login = credentials => {
       window.localStorage.setItem('BloglistAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
       dispatch(setUser(user))
-    } catch {
+    } catch (e) {
       dispatch(errorNotification('Wrong username or password'))
     }
   }
