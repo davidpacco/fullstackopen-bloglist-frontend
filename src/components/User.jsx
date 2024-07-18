@@ -1,5 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import Table from 'react-bootstrap/Table'
 
 export function User() {
   const { id } = useParams()
@@ -12,12 +14,22 @@ export function User() {
   return (
     <>
       <h2>{user.name}</h2>
-      <h3>Added blogs</h3>
-      <ul>
-        {user.blogs.map(blog => (
-          <li key={blog.id}>{blog.title}</li>
-        ))}
-      </ul>
+      <Table bordered striped hover>
+        <thead>
+          <tr>
+            <th>Added blogs</th>
+          </tr>
+        </thead>
+        <tbody>
+          {user.blogs.map(blog => (
+            <tr key={blog.id}>
+              <td>
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </>
   )
 }

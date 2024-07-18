@@ -1,6 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteBlog, likeBlog, postComment } from '../reducers/blogsReducer'
 import { useParams, useNavigate } from 'react-router-dom'
+import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import ListGroup from 'react-bootstrap/ListGroup'
 
 export function Blog() {
   const navigate = useNavigate()
@@ -44,30 +48,48 @@ export function Blog() {
   if (!blog) return null
 
   return (
-    <div className="blog">
-      <h2>
-        {blog.title} - {blog.author}
-      </h2>
-      <div>
-        <a href={blog.url}>{blog.url}</a>
-      </div>
-      <div>
-        {blog.likes} likes <button onClick={handleLike}>Like</button>
-      </div>
-      <div>Added by {blog.user.name}</div>
-      {user.username === blog.user.username && (
-        <button onClick={handleDelete}>Remove</button>
-      )}
+    <div>
+      <Card>
+        <Card.Body>
+          <Card.Title>
+            {blog.title} - {blog.author}
+          </Card.Title>
+          <Card.Text>
+            <a href={blog.url}>{blog.url}</a>
+          </Card.Text>
+          <Card.Text>
+            {blog.likes} likes{' '}
+            <Button variant="primary" onClick={handleLike}>
+              Like
+            </Button>
+          </Card.Text>
+          <Card.Text>Added by {blog.user.name}</Card.Text>
+          {user.username === blog.user.username && (
+            <Button variant="danger" onClick={handleDelete}>
+              Remove
+            </Button>
+          )}
+        </Card.Body>
+      </Card>
+
       <h3>Comments</h3>
-      <form onSubmit={handleSubmit}>
-        <input name="comment" type="text" />
-        <button type="submit">Add comment</button>
-      </form>
-      <ul>
+
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Control type="text" name="comment" />
+          <Button variant="outline-primary" type="submit">
+            Add comment
+          </Button>
+        </Form.Group>
+      </Form>
+
+      <br />
+
+      <ListGroup>
         {blog.comments.map((comment, index) => (
-          <li key={index}>{comment}</li>
+          <ListGroup.Item key={index}>{comment}</ListGroup.Item>
         ))}
-      </ul>
+      </ListGroup>
     </div>
   )
 }

@@ -2,20 +2,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { initialBlogs } from '../reducers/blogsReducer'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Table from 'react-bootstrap/Table'
 
 export function Blogs({ children }) {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user)
   const blogs = useSelector(({ blogs }) => blogs)
   const sortedBlogs = blogs.toSorted((a, b) => b.likes - a.likes)
-
-  const blogStyle = {
-    padding: '10px 8px',
-    border: 'solid',
-    borderRadius: 8,
-    borderWidth: 1,
-    marginBottom: 8,
-  }
 
   useEffect(() => {
     dispatch(initialBlogs())
@@ -26,13 +19,19 @@ export function Blogs({ children }) {
       <div>
         {children}
         <br />
-        {sortedBlogs.map(blog => (
-          <div key={blog.id} style={blogStyle}>
-            <Link to={`/blogs/${blog.id}`}>
-              {blog.title} - {blog.author}
-            </Link>
-          </div>
-        ))}
+        <Table striped bordered hover>
+          <tbody>
+            {sortedBlogs.map(blog => (
+              <tr key={blog.id}>
+                <td>
+                  <Link to={`/blogs/${blog.id}`}>
+                    {blog.title} - {blog.author}
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     )
 }

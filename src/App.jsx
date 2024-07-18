@@ -24,13 +24,8 @@ function App() {
   }, [dispatch])
 
   return (
-    <div>
-      {location.pathname !== '/login' && (
-        <>
-          <NavBar />
-          <h2>Blog App</h2>
-        </>
-      )}
+    <div className="container">
+      {location.pathname !== '/login' && <NavBar />}
       <Notification />
       <Routes>
         <Route
